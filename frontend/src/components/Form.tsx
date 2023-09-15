@@ -10,50 +10,50 @@ interface StyleFormProps {
     ref: React.MutableRefObject<HTMLInputElement>;
 }
 
+const handleFormSubmission = (formRef: any, setError: Function, updateRectangles: Function) => {
+    let validSubmission: boolean = false;
+    const form = formRef?.current;
+    const inputs = form.querySelectorAll('input');
+    const formData: RectangleDimensionsProps = {
+        name: '',
+        dimensions: { top: null, left: null, height: null, width: null}
+    };
+
+    for (let i = 0; i < inputs.length; i++) {
+        const input = inputs[i];
+        const name: string = input.name;
+        const value = input.value;
+
+        if (!value.length) {
+            setError('All fields are required')
+            break
+        }
+
+        if (name === 'name') {
+            formData.name = value;
+        } else {
+            if (parseFloat(value) < 0 || isNaN(parseFloat(value))) {
+                setError(`${input.getAttribute('data-name')} is not a valid integer`)
+                break
+            }
+
+            formData.dimensions[name] = parseInt(value);
+        }
+
+        // If we've made it to the end of the loop withotu breaking we have valid inputs
+        validSubmission = i === inputs.length - 1
+    }
+
+    if (validSubmission) {
+        updateRectangles(formData)
+        setError('')
+    }
+}
+
 export default function Form() {
     const { updateRectangles } = useContext(ShapeContext);
     const formRef = useRef() as React.MutableRefObject<HTMLInputElement>;
     const [error, setError] = useState<string | null>(null);
-
-    const handleFormSubmission = () => {
-        let validSubmission: boolean = false;
-        const form = formRef?.current;
-        const inputs = form.querySelectorAll('input');
-        const formData: RectangleDimensionsProps = {
-            name: '',
-            dimensions: { top: null, left: null, height: null, width: null}
-        };
-
-        for (let i = 0; i < inputs.length; i++) {
-            const input = inputs[i];
-            const name: string = input.name;
-            const value = input.value;
-
-            if (!value.length) {
-                setError('All fields are required')
-                break
-            }
-
-            if (name === 'name') {
-                formData.name = value;
-            } else {
-                if (parseFloat(value) < 0 || isNaN(parseFloat(value))) {
-                    setError(`${input.getAttribute('data-name')} is not a valid integer`)
-                    break
-                }
-
-                formData.dimensions[name] = parseInt(value);
-            }
-
-            // If we've made it to the end of the loop withotu breaking we have valid inputs
-            validSubmission = i === inputs.length - 1
-        }
-
-        if (validSubmission) {
-            updateRectangles(formData)
-            setError('')
-        }
-    }
 
     return (
         <StyledForm ref={formRef}>
@@ -87,7 +87,7 @@ export default function Form() {
             <div className='relative'>
                 <Button 
                     label='Create New Shape'
-                    handleClick={() => handleFormSubmission()}
+                    handleClick={() => handleFormSubmission(formRef, setError, updateRectangles)}
                     isFormSubmit={true}
                 />
                 {error && <span id='error'>{error}</span>}

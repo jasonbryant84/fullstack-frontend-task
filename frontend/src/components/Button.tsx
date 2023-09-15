@@ -12,11 +12,11 @@ interface ButtonProps {
     isCloseBtn?: boolean;
 }
 
+const handleButtonClick = (handleClick: Function) => {
+    handleClick()
+}
+
 export default function Button({ label, handleClick, isFormSubmit, isCloseBtn }: ButtonProps) {
-    const handleButtonClick = () => {
-        handleClick()
-    }
-    
     return (
         <StyleSheetManager
             shouldForwardProp={
@@ -24,7 +24,7 @@ export default function Button({ label, handleClick, isFormSubmit, isCloseBtn }:
             }
         >
             <StyledButton
-                onClick={handleButtonClick}
+                onClick={() => handleButtonClick(handleClick)}
                 isFormSubmit={isFormSubmit}
                 isCloseBtn={isCloseBtn}
             >

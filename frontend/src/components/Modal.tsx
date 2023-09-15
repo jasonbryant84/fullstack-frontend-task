@@ -5,13 +5,13 @@ import { ShapeContext } from '../utils/context';
 import Form from '../components/Form';
 import Button from '../components/Button';
 
+const handleClick = (event: any) => {
+    // Stop bubble up
+    event.stopPropagation();
+}
+
 export default function Modal() {
     const { handleShowModal } = useContext(ShapeContext);
-
-    const handleClick = (event: any) => {
-        // Stop bubble up
-        event.stopPropagation();
-    }
 
     return (
         <StyledModal onClick={(e) => handleClick(e)}>

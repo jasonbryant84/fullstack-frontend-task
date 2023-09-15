@@ -15,6 +15,28 @@ export interface RectangleDimensionsProps {
     setMouseCoords?: Function;
 }
 
+const handleOnMouseMove = (event: MouseEvent, name: string, setMouseCoords: Function | undefined, rectangleRef: any) => {
+    if(setMouseCoords) {
+        const rect = rectangleRef?.current?.getBoundingClientRect();
+        if (rect) {
+            const x = event.clientX - rect.left;
+            const y = rect.bottom - event.clientY;
+
+            setMouseCoords({ name, x, y })
+        }
+    }
+}
+
+const handleOnMouseLeave = (setMouseCoords: Function | undefined) => {
+    if(setMouseCoords) {
+        setMouseCoords({
+            name: null,
+            x: null,
+            y: null
+        })
+    }
+}
+
 export default function Rectangle({ name, dimensions, setMouseCoords } : RectangleDimensionsProps) {
     const rectangleRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
@@ -30,27 +52,6 @@ export default function Rectangle({ name, dimensions, setMouseCoords } : Rectang
             ...dimensions
         });
     }, []);
-
-    const handleOnMouseMove = (event: MouseEvent) => {
-        if(setMouseCoords) {
-            const rect = rectangleRef?.current?.getBoundingClientRect();
-            if (rect) {
-                const x = event.clientX - rect.left;
-                const y = rect.bottom - event.clientY;
-    
-                setMouseCoords({ name, x, y })
-            }
-        }
-    }
-    const handleOnMouseLeave = () => {
-        if(setMouseCoords) {
-            setMouseCoords({
-                name: null,
-                x: null,
-                y: null
-            })
-        }
-    }
     
     if (!dimensions) return null
     return (
@@ -59,8 +60,8 @@ export default function Rectangle({ name, dimensions, setMouseCoords } : Rectang
                 ref={rectangleRef}
                 className='bg-blue'
                 {...divStyles}
-                onMouseMove={(e) => handleOnMouseMove(e)}
-                onMouseLeave={() => handleOnMouseLeave()}
+                onMouseMove={(e) => handleOnMouseMove(e, name, setMouseCoords, rectangleRef)}
+                onMouseLeave={() => handleOnMouseLeave(setMouseCoords)}
             />
         </StyleSheetManager>
     )
