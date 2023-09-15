@@ -12,10 +12,6 @@ interface ButtonProps {
     isCloseBtn?: boolean;
 }
 
-const handleButtonClick = (handleClick: Function) => {
-    handleClick()
-}
-
 export default function Button({ label, handleClick, isFormSubmit, isCloseBtn }: ButtonProps) {
     return (
         <StyleSheetManager
@@ -24,7 +20,7 @@ export default function Button({ label, handleClick, isFormSubmit, isCloseBtn }:
             }
         >
             <StyledButton
-                onClick={() => handleButtonClick(handleClick)}
+                onClick={() => handleClick()}
                 isFormSubmit={isFormSubmit}
                 isCloseBtn={isCloseBtn}
             >
