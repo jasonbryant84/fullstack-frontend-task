@@ -7,14 +7,15 @@ import Button from '../components/Button';
 
 interface CreateWidgetProps {
     mouseCoords: MouseCoordsProps;
+    onClick: Function;
 }
 
-export default function CreateWidget({ mouseCoords }: CreateWidgetProps) {
+export default function CreateWidget({ mouseCoords, onClick }: CreateWidgetProps) {
     const { name, x, y } = mouseCoords;
     const { handleShowModal } = useContext(ShapeContext);
 
     return (
-        <StyledDiv>
+        <StyledDiv onClick={(e) => onClick(e)}>
             <div className="title flex justify-center items-center h-[80px]">
                 Details
             </div>

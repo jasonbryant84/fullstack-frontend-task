@@ -8,10 +8,15 @@ import Button from '../components/Button';
 export default function Modal() {
     const { handleShowModal } = useContext(ShapeContext);
 
+    const handleClick = (event: any) => {
+        // Stop bubble up
+        event.stopPropagation();
+    }
+
     return (
-        <StyledModal>
+        <StyledModal onClick={(e) => handleClick(e)}>
             <div id='modalHeader' className='flex px-[48px] h-[104px]'>
-                <h2>Create a shape</h2>
+                <h2 className='mt-[40px]'>Create a shape</h2>
             </div>
             <div className='px-[48px] pt-[24px]'>
                 <Form />
@@ -27,15 +32,14 @@ const StyledModal = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     
-    width: 560px;
-    height: 520px;
+    width: 562px;
+    height: 522px;
     border-radius: 8px;
     border: 1px solid var(--outline-grey-light, #F1F2F4);
     background: var(--solid-white, #FFF);
     box-shadow: 0px 16px 24px 0px rgba(10, 31, 68, 0.08);
 
     #modalHeader {
-        align-items: center;
         border-bottom : 1px solid var(--outline-grey-light, #F1F2F4);
 
         h2 {

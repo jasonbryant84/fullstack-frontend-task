@@ -8,7 +8,7 @@ import CreateWidget from '../components/CreateWidget';
 
 
 const Canvas = () => {
-    const { rectangles, showModal } = useContext(ShapeContext);
+    const { rectangles, showModal, handleShowModal } = useContext(ShapeContext);
 
     // Going with Prop drill over context management (only one layer down)
     // and used only in one place unlike modal hide/show logic and 
@@ -19,8 +19,17 @@ const Canvas = () => {
         y: null,
     });
 
+    const handleCanvasClick = () => {
+        const temp = !showModal;
+        handleShowModal(temp);
+    }
+
+    const handleWidgetClick = (event: any) => {
+        // Stop bubble up
+        event.stopPropagation();
+    }
     return (
-        <>
+        <div className="portugal w-screen h-screen" onClick={handleCanvasClick}>
             {rectangles?.map((rectangle, key) => {
                 return <Rectangle
                     key={key}
@@ -30,10 +39,13 @@ const Canvas = () => {
                 />
             })}
 
-            <CreateWidget mouseCoords={mouseCoords} />
+            <CreateWidget
+                mouseCoords={mouseCoords}
+                onClick={handleWidgetClick}
+            />
 
             {showModal && <Modal />}
-        </>
+        </div>
     )
 }
 

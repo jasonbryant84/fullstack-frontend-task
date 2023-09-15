@@ -111,7 +111,7 @@ const StyledForm = styled.form<StyleFormProps>`
             width: 100%;
 
             display: flex;
-            height: 48px;
+            height: 50px;
             padding: 12px 16px;
             justify-content: center;
             align-items: center;
@@ -120,6 +120,15 @@ const StyledForm = styled.form<StyleFormProps>`
             border: 1px solid #F1F2F4;
             background: #F7F8F9;
             box-shadow: 0px 2px 2px 0px rgba(10, 31, 68, 0.12) inset;
+
+            &::placeholder {
+                font-family: 'Matter Regular', sans-serif;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 24px;
+                color: #B0B7C3;
+            }
         }
 
         .half {
